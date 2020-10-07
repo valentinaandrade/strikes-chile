@@ -64,8 +64,7 @@ ohl %>% subset(is.na(ciuur2)) %>% select(yr,ciuur2,ciuur3,ciuur4,sector)
 
 
 
-#### Número de huelgas en general
-
+#### Numero de huelgas en general
 
 ohl %>% subset(inicio>"2010-01-01") %>% group_by(yr,mes) %>% tally() %>% mutate(t=paste(yr,"-",mes,"-","01",sep = ""),t=ymd(t)) %>% 
   ggplot(aes( x = t, y =n)) +
@@ -88,7 +87,7 @@ ohl %>% group_by(yr,sector,leg) %>% subset(!is.na(sector)) %>% tally() %>%
   
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/Número de huelgas en Chile (1980-2018) según sector económico y legalidad.png",
+  filename = "../Output/graph/Número de huelgas en Chile (1980-2018) según sector económico y legalidad.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -118,7 +117,7 @@ ohl %>% group_by(yr,sector,leg) %>% subset(!is.na(sector)) %>% summarise(tc=sum(
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/Número de trabajadores en huelgas en Chile (1980-2018). Solo manufactura, electricidad, comercio y banca.png",
+  filename = "../Output/graph/Número de trabajadores en huelgas en Chile (1980-2018). Solo manufactura, electricidad, comercio y banca.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -146,7 +145,7 @@ ohl %>% group_by(yr,sector,leg) %>% subset(!is.na(sector)) %>% summarise(tc=sum(
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/Número de trabajadores en huelgas en Chile (1980-2018). Solo agricultura, minería, sector público, educación, salud y servicios sociales.png",
+  filename = "../Output/graph/Número de trabajadores en huelgas en Chile (1980-2018). Solo agricultura, minería, sector público, educación, salud y servicios sociales.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -172,7 +171,7 @@ ohl %>% group_by(yr,sector,leg) %>% subset(!is.na(sector)) %>% summarise(tc=sum(
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/Número de trabajadores en huelgas en Chile (1980-2018). Nacionales y sector público.png",
+  filename = "../Output/graph/Número de trabajadores en huelgas en Chile (1980-2018). Nacionales y sector público.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -214,7 +213,7 @@ annotate_figure(g3, top=text_grob("Número de huelgas y de trabajadores comprome
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/Número de trabajadores y de huelgas en Chile (1980-2018). Comercio y manufactura.png",
+  filename = "../Output/graph/Número de trabajadores y de huelgas en Chile (1980-2018). Comercio y manufactura.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -228,44 +227,6 @@ ggsave(
 
 ## Se recarga la base como texto
 
-ohl<-ohl %>% mutate(sector=case_when(ciuur2==1 ~ "A Agriculture",
-                                     ciuur2==2 ~ "B Mining",
-                                     ciuur2==3 ~ "C Manufacturing industry",
-                                     ciuur2==4 ~ "D-E Electricity, Water and Sanitary Services",
-                                     ciuur2==5 ~ "F Construction",
-                                     ciuur2==6 ~ "G-I Commerce",
-                                     ciuur2==7 ~ "H-J Transportation and Communication",
-                                     ciuur2==8 ~ "L-K Banks and Financial Services",
-                                     ciuur2==9 ~  "O Central, Regional and Municipal Government",
-                                     ciuur2==10 ~ "P Education (private, public and municipalized)",
-                                     ciuur2==11 ~ "Q Health (private, public and municipalized)",
-                                     ciuur2==12 ~ "Q Social and Personal Services",
-                                     ciuur2==13 ~ "Unknown or Other Activities",
-                                     ciuur2==14 ~ "National Strikes",
-                                     is.na(ciuur2)&ciuur4==1 ~ "A Agriculture",
-                                     is.na(ciuur2)&ciuur4==2  ~ "B Mining",
-                                     is.na(ciuur2)&ciuur4==3  ~ "C Manufacturing industry",
-                                     is.na(ciuur2)&ciuur4==4  ~ "D-E Electricity, Water and Sanitary Services",
-                                     is.na(ciuur2)&ciuur4==5  ~ "D-E Electricity, Water and Sanitary Services",
-                                     is.na(ciuur2)&ciuur4==6  ~ "F Construction",
-                                     is.na(ciuur2)&ciuur4==7  ~ "G-I Commerce",
-                                     is.na(ciuur2)&ciuur4==8  ~ "H-J Transportation and Communication",
-                                     is.na(ciuur2)&ciuur4==9  ~ "G-I Commerce",
-                                     is.na(ciuur2)&ciuur4==10 ~ "H-J Transportation and Communication",
-                                     is.na(ciuur2)&ciuur4==11 ~ "L-K Banks and Financial Services",
-                                     is.na(ciuur2)&ciuur4==12 ~ "L-K Banks and Financial Services",
-                                     is.na(ciuur2)&ciuur4==13 ~ "M Professional, scientific and technical activities",
-                                     is.na(ciuur2)&ciuur4==14 ~ "N Activities of administrative and support services",
-                                     is.na(ciuur2)&ciuur4==15 ~ "O Central, Regional and Municipal Government",
-                                     is.na(ciuur2)&ciuur4==16 ~ "P Education (private, public and municipalized)",
-                                     is.na(ciuur2)&ciuur4==17 ~ "Q Health (private, public and municipalized)",
-                                     is.na(ciuur2)&ciuur4==18 ~ "R Artistic, entertainment and recreational activities",
-                                     is.na(ciuur2)&ciuur4==19 ~ "Unknown or Other Activities",
-                                     is.na(ciuur2)&ciuur4==20 ~ "Unknown or Other Activities",
-                                     is.na(ciuur2)&ciuur4==21 ~ "Unknown or Other Activities"))
-
-
-table(ohl$tactica2)
 a<-ohl %>% subset(sector%in% c("G-I Commerce") & yr>=2010) %>% group_by(tactica1) %>% tally() %>% rename(tactica=tactica1,t1=n)
 b<-ohl %>% subset(sector%in% c("G-I Commerce") & yr>=2010) %>% group_by(tactica2) %>% tally() %>% rename(tactica=tactica2,t2=n)
 c<-ohl %>% subset(sector%in% c("G-I Commerce") & yr>=2010) %>% group_by(tactica3) %>% tally() %>% rename(tactica=tactica3,t3=n)
@@ -344,7 +305,7 @@ a %>% ggplot(aes(x=reorder(tactica,t), y=t)) +
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/tácticas en comercio.png",
+  filename = "../Output/graph/tácticas en comercio.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -407,7 +368,7 @@ a %>% ggplot(aes(x=reorder(demanda,d), y=d)) +
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/demandas en comercio.png",
+  filename = "../Output/graph/demandas en comercio.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -434,7 +395,7 @@ ohl %>% subset(sector%in% c("G-I Commerce") & tc<2500) %>%
 
 ggsave(
   plot = last_plot(),
-  filename = "../Output/Gráficos/Correlación TC y año de la huelga.png",
+  filename = "../Output/graph/Correlación TC y año de la huelga.png",
   device = "png",
   dpi = "retina",
   units = "cm",
@@ -467,3 +428,63 @@ ohl %>% subset(sector%in% c("G-I Commerce") & tc<2500) %>%
   labs(caption = "Elaboración propia en base a OHL")  +
   theme(legend.position="bottom") 
 
+
+# worker-lostday ----------------------------------------------------------
+theme_set(theme_classic() + theme(text = element_text(size = 14),
+                legend.position="bottom"))
+
+ohl$dhtp <- as.numeric(ohl$dhtp)
+options(scipen = 999)
+
+# Tradicional -----------
+ohl %>% filter(!is.na(sector), sector %in% c("A Agriculture",         
+                       "B Mining",
+                       "C Manufacturing industry",
+                       "D-E Electricity, Water and Sanitary Services",
+                       "F Construction",
+                       "H-J Transportation and Communication")) %>% 
+  group_by(sector,leg, yr) %>% 
+  summarise(dhtp = sum(dhtp, na.rm = T)) %>% 
+  ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
+  facet_wrap(~ sector) +
+  geom_line(size = 1)  +
+  labs(title = "Worker-lost day strike by sector and legality (1980-2018)",
+       x="Year",
+       y = "Worker-lost day strike",
+       caption = "")  +
+  scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
+                     labels = c("Legal","Extralegal"))
+
+ggsave(plot = last_plot(),
+  filename = "../Output/graph/worker-lostday-tradicional.png",
+  device = "png",
+  dpi = "retina",
+  units = "cm",
+  width = 33,
+  height = 20)
+
+# Services --------------
+# N y M sin n
+ohl %>% filter(!is.na(sector), sector %in% c("G-I Commerce",         
+                                             "L-K Banks and Financial Services",
+                                             "Q Health (private, public and municipalized)",
+                                             "Q Social and Personal Services")) %>% 
+  group_by(sector,leg, yr) %>% 
+  summarise(dhtp = sum(dhtp, na.rm = T)) %>% 
+  ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
+  facet_wrap(~ sector) +
+  geom_line(size = 1)  +
+  labs(title = "Worker-lost day strike by sector and legality (1980-2018)",
+       x="Year",
+       y = "Worker-lost day strike",
+       caption = "")  +
+  scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
+                     labels = c("Legal","Extralegal"))
+
+ggsave(plot = last_plot(),
+       filename = "../Output/graph/worker-lostday-services.png",
+       device = "png",
+       dpi = "retina",
+       units = "cm",
+       width = 33,
+       height = 20)
