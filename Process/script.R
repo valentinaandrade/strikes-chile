@@ -1,7 +1,4 @@
-
-
 #----1. Paquetes y base de datos----
-
 library(dplyr)
 library(car)
 library(summarytools)
@@ -12,11 +9,11 @@ library(tidyverse)
 library(ggplot2)
 library(lubridate)
 library(ggpubr)
-
-unzip(zipfile = "../Input/dataverse_files.zip", exdir = "../Input")
-
 library(openxlsx)
-ohl<-readWorkbook("../Input/Labor_Strikes_Dataset_1979_2018_Public.xlsx", detectDates=TRUE)
+
+unzip(zipfile = "Input/dataverse_files.zip", exdir = "Input")
+
+ohl<-readWorkbook("Input/Labor_Strikes_Dataset_1979_2018_Public.xlsx", detectDates=TRUE)
 
 
 ## Procesamiento
@@ -429,62 +426,3 @@ ohl %>% subset(sector%in% c("G-I Commerce") & tc<2500) %>%
   theme(legend.position="bottom") 
 
 
-# worker-lostday ----------------------------------------------------------
-theme_set(theme_classic() + theme(text = element_text(size = 14),
-                legend.position="bottom"))
-
-ohl$dhtp <- as.numeric(ohl$dhtp)
-options(scipen = 999)
-
-# Tradicional -----------
-ohl %>% filter(!is.na(sector), sector %in% c("A Agriculture",         
-                       "B Mining",
-                       "C Manufacturing industry",
-                       "D-E Electricity, Water and Sanitary Services",
-                       "F Construction",
-                       "H-J Transportation and Communication")) %>% 
-  group_by(sector,leg, yr) %>% 
-  summarise(dhtp = sum(dhtp, na.rm = T)) %>% 
-  ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
-  facet_wrap(~ sector) +
-  geom_line(size = 1)  +
-  labs(title = "Worker-lost day strike by sector and legality (1980-2018)",
-       x="Year",
-       y = "Worker-lost day strike",
-       caption = "")  +
-  scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
-                     labels = c("Legal","Extralegal"))
-
-ggsave(plot = last_plot(),
-  filename = "../Output/graph/worker-lostday-tradicional.png",
-  device = "png",
-  dpi = "retina",
-  units = "cm",
-  width = 33,
-  height = 20)
-
-# Services --------------
-# N y M sin n
-ohl %>% filter(!is.na(sector), sector %in% c("G-I Commerce",         
-                                             "L-K Banks and Financial Services",
-                                             "Q Health (private, public and municipalized)",
-                                             "Q Social and Personal Services")) %>% 
-  group_by(sector,leg, yr) %>% 
-  summarise(dhtp = sum(dhtp, na.rm = T)) %>% 
-  ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
-  facet_wrap(~ sector) +
-  geom_line(size = 1)  +
-  labs(title = "Worker-lost day strike by sector and legality (1980-2018)",
-       x="Year",
-       y = "Worker-lost day strike",
-       caption = "")  +
-  scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
-                     labels = c("Legal","Extralegal"))
-
-ggsave(plot = last_plot(),
-       filename = "../Output/graph/worker-lostday-services.png",
-       device = "png",
-       dpi = "retina",
-       units = "cm",
-       width = 33,
-       height = 20)
