@@ -7,7 +7,15 @@ pacman::p_load(tidyverse, ggplot2, lubridate, openxlsx)
 unzip(zipfile = "Input/dataverse_files.zip", exdir = "Input")
 ohl<-readWorkbook("Input/Labor_Strikes_Dataset_1979_2018_Public.xlsx", detectDates=TRUE)
 
-# 3. Process --------------------------------------------------------------
+
+# 3. Setup -----------------------------------------------------------------
+
+theme_set(theme_classic() + theme(text = element_text(size = 14),
+                                  legend.position="bottom"))
+
+options(scipen = 999)
+
+# 4. Process --------------------------------------------------------------
 ohl$ciuur2<-as.factor(ohl$ciuur2)
 ohl$ciuur3<-as.factor(ohl$ciuur3)
 ohl$leg<-as.factor(ohl$leg)
@@ -52,11 +60,7 @@ ohl %>% subset(is.na(ciuur2)) %>% select(yr,ciuur2,ciuur3,ciuur4,sector)
 
 
 # worker-lostday ----------------------------------------------------------
-theme_set(theme_classic() + theme(text = element_text(size = 14),
-                                  legend.position="bottom"))
-
 ohl$dhtp <- as.numeric(ohl$dhtp)
-options(scipen = 999)
 
 # Tradicional -----------
 ohl %>% filter(!is.na(sector), sector %in% c("A Agricultura",         
@@ -70,15 +74,15 @@ ohl %>% filter(!is.na(sector), sector %in% c("A Agricultura",
   ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
   facet_wrap(~ sector) +
   geom_line(size = 1)  +
-  labs(title = "Día-trabajador perdido por huelga por sector y legalidad (1980-2018)",
-       x="Año",
-       y = "Día-trabajador perdido por huelga",
+  labs(title = "",
+       x="",
+       y = "",
        caption = "")  +
   scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
                      labels = c("Legal","Extralegal"))
 
 ggsave(plot = last_plot(),
-       filename = "Output/graph/worker-lostday-tradicional-es.png",
+       filename = "Output/graph/worker-lostday-tradicional-es-paper.png",
        device = "png",
        dpi = "retina",
        units = "cm",
@@ -96,15 +100,38 @@ ohl %>% filter(!is.na(sector), sector %in% c("G-I Comercio",
   ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
   facet_wrap(~ sector) +
   geom_line(size = 1)  +
-  labs(title = "Día-trabajador perdido por huelga por sector y legalidad (1980-2018)",
-       x="Año",
-       y = "Día-trabajador perdido por huelga",
+  labs(title = "",
+       x="",
+       y = "",
        caption = "")  +
   scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
                      labels = c("Legal","Extralegal"))
 
 ggsave(plot = last_plot(),
        filename = "Output/graph/worker-lostday-services-es.png",
+       device = "png",
+       dpi = "retina",
+       units = "cm",
+       width = 33,
+       height = 20)
+
+# Educacion --------------
+# P
+ohl %>% filter(!is.na(sector), sector %in% c("P Educación (privada, pública y municipalizada)")) %>% 
+  group_by(sector,leg, yr) %>% 
+  summarise(dhtp = sum(dhtp, na.rm = T)) %>% 
+  ggplot(aes( x = yr, y =dhtp, fill = leg, color = leg)) +
+  facet_wrap(~ sector) +
+  geom_line(size = 1)  +
+  labs(title = "",
+       x="",
+       y = "",
+       caption = "")  +
+  scale_color_manual(name="",values = c("1"="darkblue","2"="brown1"),
+                     labels = c("Legal","Extralegal"))
+
+ggsave(plot = last_plot(),
+       filename = "Output/graph/worker-lostday-educ-es.png",
        device = "png",
        dpi = "retina",
        units = "cm",
