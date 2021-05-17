@@ -201,7 +201,7 @@ ohl %>%
   geom_label(aes(x = 2016, label = "3 National strike", y = 170),color = "black", size = 4) +
   geom_label(aes(x = 2018, label = "7 National strike", y = 230),color = "black", size = 4) +
   geom_label(aes(x = 2019, label = "6 National strike", y = 200),color = "black", size = 4) +
-      labs(title = "Figure 2. Evolution  of number in strikes in Chile  by legacy (1989-2019)",
+      labs(title = "Figure 2. Evolution  of number in strikes in Chile  by legality (1989-2019)",
        x="",
        y = "Number of strikes",
        caption = "Source: Strike repository Andrade&Ratto (2021)") +
@@ -238,7 +238,7 @@ ohl %>%
   geom_label(aes(x = 2016, label = "3 National strike", y = 6500000),color = "black", size = 4) +
   geom_label(aes(x = 2018, label = "7 National strike", y = 9000000),color = "black", size = 4) +
   geom_label(aes(x = 2019, label = "6 National strike", y = 8000000),color = "black", size = 4) +
-  labs(title = "Figure 3. Evolution of worker lost on day in strikes in Chile by legacy (1989-2019)",
+  labs(title = "Figure 3. Evolution of worker lost on day in strikes in Chile by legality (1989-2019)",
        x="",
        y = "Worker lost on day",
        caption = "Source: Strike repository Andrade&Ratto (2021)") +
